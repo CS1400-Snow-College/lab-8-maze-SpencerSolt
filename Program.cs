@@ -1,12 +1,16 @@
 ﻿// Spencer Solt, 10/28/25, Lab:8 Maze
+using System.Diagnostics;
 Console.WriteLine("The goal is to move from the top left of the displayed maze to the goal '*' using the arrow keys.");
 
 //Loads the contents of the file to be saved on a variable to be printed
 string[] mapRows = File.ReadAllLines("C:/Users/spenc/Desktop/Labs/lab-8-maze-SpencerSolt/map.txt");
 
-//Keeps the description of the program until the user is done reading
+//Keeps the description of the program and doesn't start the stopwatch until the user is done reading
 Console.Write("Press any key to continue ");
 Console.ReadKey(true);
+Stopwatch.StartNew();
+long time = Stopwatch.GetTimestamp();
+TimeSpan timeSpan = Stopwatch.GetElapsedTime(time);
 
 //Clears the screen then displays the maze
 Console.Clear();
@@ -45,9 +49,10 @@ bool win = false;
 //Loop to keep the program running until the escape key is pressed
 do
 {
-    //Checks to see if the current cell contains '*' and changes the win condition to true if true
+    //Changinges the win condition to true when the current cell contains '*' and gets the time to complete the maze
     if (mapRows[Console.CursorTop].Substring(Console.CursorLeft, 1).Contains("*"))
     {
+        timeSpan = Stopwatch.GetElapsedTime(time);
         win = true;
         break;
     }
@@ -57,4 +62,7 @@ while (key != ConsoleKey.Escape || win == true);
 //Clears the console when the loop ends and adds a congratulatory message if the win condition is true
 Console.Clear();
 if (win == true)
+{
     Console.WriteLine("Congratulations on completing the maze!");
+    Console.WriteLine($"Completion time: {timeSpan}");
+}
