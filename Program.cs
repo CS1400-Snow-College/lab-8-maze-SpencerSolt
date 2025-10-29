@@ -39,9 +39,22 @@ ConsoleKey key;
 int mazeBottom = mapRows.Count() - 1;
 int mazeRight = mapRows[Console.CursorTop].Length - 1;
 
+//Variable for the win to exit the loop
+bool win = false;
+
 //Loop to keep the program running until the escape key is pressed
 do
 {
+    //Checks to see if the current cell contains '*' and changes the win condition to true if true
+    if (mapRows[Console.CursorTop].Substring(Console.CursorLeft, 1).Contains("*"))
+    {
+        win = true;
+        break;
+    }
     key = TryMove(Console.ReadKey(true).Key, mazeBottom, mazeRight);
 }
-while (key != ConsoleKey.Escape);
+while (key != ConsoleKey.Escape || win == true);
+//Clears the console when the loop ends and adds a congratulatory message if the win condition is true
+Console.Clear();
+if (win == true)
+    Console.WriteLine("Congratulations on completing the maze!");
