@@ -1,11 +1,43 @@
 ﻿// Spencer Solt, 10/28/25, Lab:8 Maze
 Console.WriteLine("The goal is to move from the top left of the displayed maze to the goal '*' using the arrow keys.");
+
 //Loads the contents of the file to be saved on a variable to be printed
 string[] mapRows = File.ReadAllLines("C:/Users/spenc/Desktop/Labs/lab-8-maze-SpencerSolt/map.txt");
+
 //Keeps the description of the program until the user is done reading
 Console.Write("Press any key to continue ");
 Console.ReadKey(true);
+
 //Clears the screen then displays the maze
 Console.Clear();
 for (int i = 0; i < mapRows.Count(); i++)
     Console.WriteLine(mapRows[i]);
+
+//Movement control method, the parameter stops the user from typing text
+ConsoleKey TryMove(ConsoleKey button)
+{
+    //Compares the user input to move the cursor in the correct direction
+    if (button is ConsoleKey.DownArrow)
+        Console.CursorTop++;
+    else if (button is ConsoleKey.UpArrow)
+        Console.CursorTop--;
+    else if (button is ConsoleKey.LeftArrow)
+        Console.CursorLeft--;
+    else if (button is ConsoleKey.RightArrow)
+        Console.CursorLeft++;
+    //Returns the user input so the 'do-while' loop can check it
+    return button;
+}
+
+//Puts the cursor in the correct starting position
+Console.SetCursorPosition(0, 0);
+
+//Enumerable so the while loop can check the user input for ConsoleKey.Escape
+ConsoleKey key;
+
+//Loop to keep the program running until the escape key is pressed
+do
+{
+    key = TryMove(Console.ReadKey(true).Key);
+}
+while (key != ConsoleKey.Escape);
