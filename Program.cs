@@ -14,16 +14,16 @@ for (int i = 0; i < mapRows.Count(); i++)
     Console.WriteLine(mapRows[i]);
 
 //Movement control method, the parameter stops the user from typing text
-ConsoleKey TryMove(ConsoleKey button, int mazeHeight, int mazeLength)
+ConsoleKey TryMove(ConsoleKey button, int mazeHeight, int mazeLength, string[] mazeRows)
 {
     //Compares the user input to move the cursor in the correct direction
-    if (button is ConsoleKey.DownArrow && Console.CursorTop < Console.BufferHeight && Console.CursorTop < mazeHeight)
+    if (button is ConsoleKey.DownArrow && Console.CursorTop < Console.BufferHeight && Console.CursorTop < mazeHeight && !mazeRows[Console.CursorTop + 1].Substring(Console.CursorLeft, 1).Contains('#'))
         Console.CursorTop++;
-    else if (button is ConsoleKey.UpArrow && Console.CursorTop > 0)
+    else if (button is ConsoleKey.UpArrow && Console.CursorTop > 0 && Console.CursorTop < mazeHeight && !mazeRows[Console.CursorTop - 1].Substring(Console.CursorLeft, 1).Contains('#'))
         Console.CursorTop--;
-    else if (button is ConsoleKey.LeftArrow && Console.CursorLeft > 0)
+    else if (button is ConsoleKey.LeftArrow && Console.CursorLeft > 0 && Console.CursorTop < mazeHeight && !mazeRows[Console.CursorTop].Substring(Console.CursorLeft - 1, 1).Contains('#'))
         Console.CursorLeft--;
-    else if (button is ConsoleKey.RightArrow && Console.CursorLeft < Console.BufferWidth && Console.CursorLeft < mazeLength)
+    else if (button is ConsoleKey.RightArrow && Console.CursorLeft < Console.BufferWidth && Console.CursorLeft < mazeLength && !mazeRows[Console.CursorTop].Substring(Console.CursorLeft + 1, 1).Contains('#'))
         Console.CursorLeft++;
     //Returns the user input so the 'do-while' loop can check it
     return button;
@@ -51,7 +51,7 @@ do
         win = true;
         break;
     }
-    key = TryMove(Console.ReadKey(true).Key, mazeBottom, mazeRight);
+    key = TryMove(Console.ReadKey(true).Key, mazeBottom, mazeRight, mapRows);
 }
 while (key != ConsoleKey.Escape || win == true);
 //Clears the console when the loop ends and adds a congratulatory message if the win condition is true
